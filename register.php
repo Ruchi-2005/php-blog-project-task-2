@@ -25,25 +25,76 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
     <title>Register - Blog</title>
+    <link rel="stylesheet" type="text/css" href="style.css"> <!-- ✅ Include CSS -->
+    <style>
+        /* Same clean centered style as login page */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .register-container {
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        input[type="submit"] {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .error {
+            color: red;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
 
-<h2>Register</h2>
+<div class="register-container">
+    <h2>Register</h2>
 
-<?php if (!empty($error)) echo "<p style='color:red;'>$error</p>"; ?>
+    <?php if (!empty($error)) echo "<p class='error'>$error</p>"; ?>
 
-<form method="POST">
-    Username: <input type="text" name="username" required><br><br>
-    Password: <input type="password" name="password" required><br><br>
-    <input type="submit" value="Register">
-</form>
+    <form method="POST">
+        <input type="text" name="username" placeholder="Enter username" required><br>
+        <input type="password" name="password" placeholder="Enter password" required><br>
+        <input type="submit" value="Register">
+    </form>
 
-<p>Already have an account? <a href="login.php">Login here</a>.</p>
+    <p>Already have an account? <a href="login.php">Login here</a>.</p>
+</div>
 
 </body>
 </html>

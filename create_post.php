@@ -1,30 +1,42 @@
 <?php
 session_start();
-include 'db.php';
+require_once('db.php');
 
+// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    echo "You must <a href='login.php'>login</a> first.";
+    header("Location: login.php");
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $title = $_POST['title'];
-    $content = $_POST['content'];
-    $user_id = $_SESSION['user_id'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $title = trim($_POST['title']);
+    $content = trim($_POST['content']);
+    $user_id = $_SESSION['user_id']; // Logged-in user's ID
 
-    $sql = "INSERT INTO posts (title, content, user_id) VALUES ('$title', '$content', '$user_id')";
-    if ($conn->query($sql) === TRUE) {
-        echo "Post created successfully! <a href='index.php'>Go back</a>";
-    } else {
-        echo "Error: " . $conn->error;
-    }
+    // Insert post
+    $stmt = $conn->prepare("INSERT INTO posts (title, content, created_at, user_id) VALUES (?, ?, NOW(), ?)");
+    $stmt->bind_param("ssi", $title, $content, $user_id);
+    $stmt->execute();
+
+    header("Location: index.php");
+    exit;
 }
 ?>
 
-<h2>Create New Post</h2>
-<form method="POST">
-    Title: <input type="text" name="title" required><br><br>
-    Content:<br>
-    <textarea name="content" rows="5" cols="40" required></textarea><br><br>
-    <input type="submit" value="Post">
-</form>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Post</title>
+    <link rel="stylesheet" type="text/css" href="style.css"> <!-- ✅ Include CSS -->
+    
+</head>
+<body>
+    <h2>Create a New Post</h2>
+    <form method="POST">
+        Title: <input type="text" name="title" required><br><br>
+        Content:<br>
+        <textarea name="content" rows="5" cols="40" required></textarea><br><br>
+        <input type="submit" value="Publish">
+    </form>
+</body>
+</html>
